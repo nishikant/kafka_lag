@@ -1,0 +1,7 @@
+awscli
+botocore
+requests
+s3transfer
+jsonformatter
+confluent-kafka
+kafka-python
