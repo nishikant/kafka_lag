@@ -18,7 +18,7 @@ class Execute:
                             args.service, args.region)
 
     def run(self):
-        server_ips = self.aws.get_ips()
+        server_ips = self.aws.get_zookeeper_ips()
         ip = random.choice(server_ips)
         self.queryKPKafka(ip)
 
@@ -28,6 +28,9 @@ class Execute:
         return(end_offset)
 
     def _query_loop(self, consumer_group):
+        pass
+
+    def _push_to_cloudwatch(self, kafka_lag):
         pass
 
     def queryKPKafka(self, ip):
@@ -91,7 +94,19 @@ class Execute:
                     cg_lag[cg_name][eo.topic] += end_offset[eo] - \
                         cg_offsets[eo]
 
-        logger.info("CG Lag is %s ", cg_lag)
+        for cg in cg_lag:
+            cg_total_lag = 0
+
+            for topic in cg_lag[cg]:
+                logger.debug("For CG %s topic %s lag is %s", cg, topic,
+                             cg_lag[cg][topic])
+                cg_total_lag += cg_lag[cg][topic]
+
+                if cg_total_lag > 0:
+                    self.aws.publish_metrics_cloudwatch(cg, topic,
+                                                        cg_lag[cg][topic])
+
+        logger.info("CG Lag is %s ", json.dumps(cg_lag))
         return(json.dumps(cg_lag))
 
     def queryConfluenceKafka(self, ip):

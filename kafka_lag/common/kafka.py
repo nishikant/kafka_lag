@@ -3,7 +3,7 @@ from kafka.admin.client import KafkaAdminClient
 from kafka import KafkaConsumer, TopicPartition
 from kafka import BrokerConnection
 from kafka.protocol.admin import *
-import socket
+import time
 import logging
 
 logger = logging.getLogger(__name__)
@@ -37,6 +37,11 @@ class KPKafka:
         try:
             admin_client = KafkaAdminClient(bootstrap_servers='172.28.48.52',
                                             request_timeout_ms=60000)
+            wait_count = 15
+            while(admin_client is None and wait_count > 0):
+                logger.debug("Waiting for admin_client")
+                wait_count -= 1
+                time.sleep(1)
             return(admin_client)
         except ConnectionError as e:
             logger.debug("Some issue connecting to %s with message %s",

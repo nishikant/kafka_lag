@@ -11,7 +11,7 @@ class AWSQuery:
         self.service = service
         self.region = region
 
-    def get_ips(self):
+    def get_zookeeper_ips(self):
         logger.debug("type: %s", self.type)
         logger.debug("environment: %s", self.environment)
         logger.debug("service: %s", self.service)
@@ -44,3 +44,25 @@ class AWSQuery:
                 logger.debug("Ipaddr: %s", instance['PrivateIpAddress'])
 
         return(service_ips)
+
+    def publish_metrics_cloudwatch(self, consumer_group, topic, lag_value):
+
+        cloudwatch = boto3.client('cloudwatch', region_name=self.region)
+        logger.debug("Pushing data %s %s %s to aws", consumer_group,
+                     topic, lag_value)
+
+        cloudwatch.put_metric_data(
+            MetricData=[
+                {
+                    'MetricName': self.service,
+                    'Dimensions': [
+                        {
+                            'Name': 'consumer_group_name',
+                            'Value': consumer_group
+                        },
+                    ],
+                    'Value': lag_value
+                },
+            ],
+            Namespace='kafka_lag'
+        )

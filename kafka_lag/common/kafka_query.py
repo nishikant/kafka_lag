@@ -4,7 +4,7 @@ from confluent_kafka.admin import ConfigResource
 from confluent_kafka import KafkaException
 import confluent_kafka
 import concurrent.futures
-
+import time
 logger = logging.getLogger(__name__)
 
 
@@ -54,5 +54,9 @@ class KPKafkaQuery:
     def getTopicEndOffset(self, topic_partition):
         logger.debug('TP for end_offset is %s ', topic_partition)
         end_offset = self.kafka_client.end_offsets(topic_partition)
-
+        wait_count = 15
+        while (end_offset is None and wait_count > 0):
+            logger.debug("Waiting for end_offset")
+            wait_count -= 1
+            time.sleep(1)
         return(end_offset)
