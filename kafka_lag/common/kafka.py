@@ -33,9 +33,9 @@ class KPKafka:
         logger.debug("Creating kafka-python client")
 
     def create_admin_client(self):
-        logger.debug("Creating BrokerConnection to %s", self.server_ip)
+        logger.info("Creating BrokerConnection to %s", self.server_ip)
         try:
-            admin_client = KafkaAdminClient(bootstrap_servers='172.28.48.52',
+            admin_client = KafkaAdminClient(bootstrap_servers=self.server_ip,
                                             request_timeout_ms=60000)
             wait_count = 15
             while(admin_client is None and wait_count > 0):

@@ -38,9 +38,10 @@ class Execute:
         logger.debug("Creating admin client")
         admin_kafka_client = kafka.KPKafka(ip).create_admin_client()
         admin_query = kafka_query.KPKafkaQuery(admin_kafka_client)
-        if self.args.consumer_groups:
+        try:
+            self.args.consumer_groups
             consumer_groups = self.args.consumer_groups
-        else:
+        except AttributeError:
             consumer_groups = admin_query.listConsumerGroups()
 
         logger.debug("Creating kafka consumer")
