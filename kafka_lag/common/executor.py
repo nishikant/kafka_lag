@@ -103,9 +103,9 @@ class Execute:
                              cg_lag[cg][topic])
                 cg_total_lag += cg_lag[cg][topic]
 
-                if cg_total_lag > 0:
-                    self.aws.publish_metrics_cloudwatch(cg, topic,
-                                                        cg_lag[cg][topic])
+            if cg_total_lag > 0:
+                self.aws.publish_metrics_cloudwatch(cg, topic,
+                                                    cg_lag[cg][topic])
 
         logger.info("CG Lag is %s ", json.dumps(cg_lag))
         return(json.dumps(cg_lag))
