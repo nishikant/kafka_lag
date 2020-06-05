@@ -32,6 +32,10 @@ if __name__ == '__main__':
     parser.add_argument('--region', '-r', dest='region', required=True,
                         help='AWS Region eg: ap-south-1')
 
+    parser.add_argument('--namespace', '-n', dest='namespace', required=True,
+                        help='AWS CloudWatch namespace eg: int_kafka_lag, \
+                        qa_kafka_lag, perf_kafka_lag, prd_kafka_lag')
+
     parser.add_argument('--consumer_groups', '-c', dest='consumer_groups',
                         nargs='*', required=False,
                         help='Consumergroup for which to get lag. Default all')
@@ -57,6 +61,7 @@ def lambda_handler(event, context):
     logger.debug("Environment is : %s", event['environment'])
     logger.debug("Service is : %s", event['service'])
     logger.debug("Region is : %s", event['region'])
+    logger.debug("CloudWatch Namespace is : %s", event['namespace'])
     try:
         event['consumer_groups']
         logger.debug("Getting lag for Consumer Groups %s",

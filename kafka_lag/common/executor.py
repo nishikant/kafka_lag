@@ -15,7 +15,7 @@ class Execute:
     def __init__(self, args):
         self.args = args
         self.aws = AWSQuery(args.type, args.environment,
-                            args.service, args.region)
+                            args.service, args.region, args.namespace)
 
     def run(self):
         server_ips = self.aws.get_zookeeper_ips()

@@ -5,16 +5,18 @@ logger = logging.getLogger(__name__)
 
 
 class AWSQuery:
-    def __init__(self, type, environment, service, region):
+    def __init__(self, type, environment, service, region, namespace):
         self.type = type
         self.environment = environment
         self.service = service
         self.region = region
+        self.namespace = namespace
 
     def get_zookeeper_ips(self):
         logger.debug("type: %s", self.type)
         logger.debug("environment: %s", self.environment)
         logger.debug("service: %s", self.service)
+        logger.debug("Namespace: %s", self.namespace)
 
         ec2 = boto3.client('ec2', region_name=self.region)
 
@@ -64,5 +66,5 @@ class AWSQuery:
                     'Value': lag_value
                 },
             ],
-            Namespace='kafka_lag'
+            Namespace=self.namespace
         )
