@@ -9,13 +9,14 @@ This package includes modules which will read kafka lag from given zookeeper
 	Arguments:
     -h, --help            show this help message and exit
 	
-    --type TYPE, -t TYPE  CMS-Service-Type tag attached to cluster For eg: kafka
+    --type TYPE, -t TYPE
+		CMS-Service-Type tag attached to cluster: kafka
 	
     --environment ENVIRONMENT, -e ENVIRONMENT
-		Environment: for which lag is calculated For eg: qa, int, prod
+		Value of cms-environment tag: qa, int, prod
 		
 	--service SERVICE, -s SERVICE 
-		CMS-Service tag attached to cluster For eg: common
+		CMS-Service tag attached to cluster: common
 						
 	--region REGION, -r REGION
 		AWS Region eg: ap-south-1
