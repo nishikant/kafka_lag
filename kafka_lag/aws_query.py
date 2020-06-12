@@ -50,8 +50,8 @@ class AWSQuery:
     def publish_metrics_cloudwatch(self, consumer_group, topic, lag_value):
 
         cloudwatch = boto3.client('cloudwatch', region_name=self.region)
-        logger.debug("Pushing data %s %s %s to aws", consumer_group,
-                     topic, lag_value)
+        logger.info("Pushing data %s %s %s to aws", consumer_group,
+                    topic, lag_value)
 
         cloudwatch.put_metric_data(
             MetricData=[

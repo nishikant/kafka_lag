@@ -1,4 +1,5 @@
-awscli
+wheel
+PyYAML
 botocore
 boto3
 requests
@@ -6,3 +7,4 @@ s3transfer
 jsonformatter
 confluent-kafka
 kafka-python
+awscli
